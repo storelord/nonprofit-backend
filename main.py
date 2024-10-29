@@ -25,7 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/health")
+@app.get("/")
 async def health() -> str:
     """Sends a 200 response with health back."""
     logger.debug("health check passed")
