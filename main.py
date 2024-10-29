@@ -1,8 +1,6 @@
 """Main logic and routing for the FastAPI"""
 
 import logging
-
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,8 +9,7 @@ from search import mission_similarity
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    filename="app.log",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -28,28 +25,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/health")
 async def health() -> str:
-    """Sends a 200 response with health back. Unauthenticated and used just for checking the server is up.
-
-    Returns:
-        str: 'healthy'
-    """
+    """Sends a 200 response with health back."""
     logger.debug("health check passed")
     return "healthy"
-
-
-def start():
-    """Start uvicorn runner. Can be called from file directly or poetry run"""
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        log_level="debug",
-        reload=True,
-    )
-
-
-if __name__ == "__main__":
-    start()
