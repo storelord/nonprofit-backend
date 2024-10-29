@@ -1,0 +1,15 @@
+.vercel
+.venv/
+.venv/*
+.venv/**
+volumes/
+
+.venv/
+
+api_key.py
+*.pyc
+
+.env
+
+*.log
+__pycache__
