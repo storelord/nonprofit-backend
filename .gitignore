@@ -5,6 +5,7 @@
 volumes/
 
 .venv/
+venv/
 
 api_key.py
 *.pyc

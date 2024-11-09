@@ -23,6 +23,26 @@ class Mission(BaseModel):
     ein: int
     name: str
     mission: str
+    revenue: int
+    city: str
+    state: str
+    zip: str
+
+    # is_foundation BOOLEAN DEFAULT FALSE,
+    # phone TEXT,
+    # officer_name TEXT,
+    # officer_title TEXT,
+    # officer_phone TEXT,
+    # cy_total_revenue_amount BIGINT,
+    # cy_contributions_grants_amount BIGINT,
+    # cy_revenues_less_expenses_amount BIGINT,
+    # all_other_contributions_amount BIGINT,
+    # total_contributions_amount BIGINT,
+    # total_program_service_expenses_amount BIGINT,
+    # donated_services_and_use_fclts_amount BIGINT,
+    # cy_program_service_revenue_amount BIGINT,
+    # gross_receipts_amount BIGINT,
+
 
 # Create an instance of APIRouter
 router = APIRouter()
@@ -44,12 +64,13 @@ curl -X GET "http://localhost:8000/similar_missions?mission=End%20world%20hunger
 async def get_similar_missions(mission: str):
     embedding = model.encode(mission).tolist()
     cur=conn.cursor()
-    query = "SELECT ein, name, mission FROM nonprofits ORDER BY mission_vector <-> %s::vector LIMIT %s"
+    query = "SELECT ein, name, mission, revenue, city, state, zip FROM nonprofits ORDER BY mission_vector <-> %s::vector LIMIT %s"
     try:
-        cur.execute(query, (list(embedding), 3));
+        cur.execute(query, (list(embedding), 30))
         results = cur.fetchall()
-        return [Mission(ein=result[0], name=result[1], mission=result[2]) for result in results]
+        return [Mission(ein=result[0], name=result[1], mission=result[2], revenue=result[3], city=result[4], state=result[5], zip=result[6]) for result in results]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cur.close()
+
